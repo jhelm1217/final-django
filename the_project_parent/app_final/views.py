@@ -32,6 +32,18 @@ def create_user(request):
     return Response(profile_serialized.data)
 
 
+@api_view (['POST'])
+@permission_classes ([IsAuthenticated])
+def add_friend(request, pk):
+    username = request.data.get('username')
+    trip = Trip.objects.get(pk=pk)
+    friend = User.objects.get(username=username)
+    trip.friends.add(friend)
+    trip.save()
+    serialized_trip = TripSerializer(trip)
+    return Response(serialized_trip.data)
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_message(request):

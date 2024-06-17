@@ -22,6 +22,7 @@ class TripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trip
         fields = '__all__'
+        read_only_fields = ['created_by', 'created_at']
 
 class FriendshipSerializer(serializers.ModelSerializer):
     class Meta:
