@@ -20,16 +20,19 @@ def create_user(request):
         username = request.data['username'],
     )
     user.set_password(request.data['password'])
-
     user.save()
+
     profile = Profile.objects.create(
         user = user, 
         first_name = request.data['first_name'],
         last_name = request.data['last_name']
     )
     profile.save()
+
     profile_serialized = ProfileSerializer(profile)
     return Response(profile_serialized.data)
+
+
 
 
 @api_view (['POST'])
@@ -110,14 +113,24 @@ def update_trip(request, pk):
 
 
 
+# @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+# def delete_trip(request, pk):
+#     trip = Trip.objects.filter(pk=pk, user=request.user).first()
+#     if not trip:
+#         return Response({'error': 'Trip not found'}, status=status.HTTP_404_NOT_FOUND)
+#     trip.delete()
+#     return Response(status=status.HTTP_204_NO_CONTENT)
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_trip(request, pk):
+    print(pk)
     trip = Trip.objects.filter(pk=pk, user=request.user).first()
-    if not trip:
-        return Response({'error': 'Trip not found'}, status=status.HTTP_404_NOT_FOUND)
-    trip.delete()
-    return Response(status=status.HTTP_204_NO_CONTENT)
+    if trip:
+        trip.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response({'error': 'Trip not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 
