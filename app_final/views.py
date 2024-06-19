@@ -94,29 +94,29 @@ def create_image(request):
 
 
 
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def create_trip(request):
-#    user = request.user
-#    request.data['user'] = user.pk
-#    trip_serialized = TripSerializer(data=request.data)
-#    if trip_serialized.is_valid():
-#       trip_serialized.save()
-#       return Response(trip_serialized.data, status=status.HTTP_201_CREATED)
-#    return Response(trip_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_trip(request):
-    user = request.user
-    data = request.data.copy()  # Make a mutable copy of request.data
-    data['created_by'] = user.pk  # Use 'created_by' to match your serializer field
+   user = request.user
+   request.data['user'] = user.pk
+   trip_serialized = TripSerializer(data=request.data)
+   if trip_serialized.is_valid():
+      trip_serialized.save()
+      return Response(trip_serialized.data, status=status.HTTP_201_CREATED)
+   return Response(trip_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    trip_serialized = TripSerializer(data=data)
-    if trip_serialized.is_valid():
-        trip_serialized.save()
-        return Response(trip_serialized.data, status=status.HTTP_201_CREATED)
-    return Response(trip_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def create_trip(request):
+#     user = request.user
+#     data = request.data.copy()  # Make a mutable copy of request.data
+#     data['created_by'] = user.pk  # Use 'created_by' to match your serializer field
+
+#     trip_serialized = TripSerializer(data=data)
+#     if trip_serialized.is_valid():
+#         trip_serialized.save()
+#         return Response(trip_serialized.data, status=status.HTTP_201_CREATED)
+#     return Response(trip_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
