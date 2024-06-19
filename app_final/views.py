@@ -110,7 +110,8 @@ def create_image(request):
 def create_trip(request):
     user = request.user
     data = request.data.copy()  # Make a mutable copy of request.data
-    data['created_by'] = user.pk  # Use 'created_by' to match your serializer field
+    data['created_by'] = user.pk  # Use 'created_by' to match serializer field
+    data['user'] = user.pk
 
     trip_serialized = TripSerializer(data=data)
     if trip_serialized.is_valid():
