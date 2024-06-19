@@ -32,9 +32,6 @@ if ENVIRONMENT == 'local':
 # SECRET_KEY = 'django-insecure-qbt2*2bct24=l29)lixwzymur#1h7)z3y8z@sq1+%fw&+6r_r-'
 SECRET_KEY = os.getenv('SECRET_KEY', 'a default-value for local dev')
 
-
-# ALLOWED_HOSTS = ['http://localhost', '127.0.0.1']
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -62,7 +59,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:8080']
+CORS_ALLOWED_ORIGINS = [
+  'http://localhost:8080', 
+]
 
 CORS_ALLOW_METHODS = [
     'GET',
@@ -223,3 +222,10 @@ DATABASES = {
 }
 
 ALLOWED_HOSTS = ['127.0.0.1', f"{APP_NAME}.fly.dev"]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+if APP_NAME:
+    MEDIA_ROOT = '/mnt/volume_mount/media/'
+
