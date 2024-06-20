@@ -187,14 +187,24 @@ def get_profile(request):
     serialized_profile = ProfileSerializer(profile, many=False)
     return Response(serialized_profile.data)
 
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_trips(request):
+#     user = request.user
+#     get_trips = Trip.objects.all()
+#     # get_trips = Trip.objects.get(pk=pk, user=request.user)
+#     serialized_trips = TripSerializer(get_trips, many=True)
+#     return Response(serialized_trips.data)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_trips(request):
     user = request.user
-    get_trips = Trip.objects.all()
-    # get_trips = Trip.objects.get(pk=pk, user=request.user)
-    serialized_trips = TripSerializer(get_trips, many=True)
+    user_trips = Trip.objects.filter(user=user)
+    serialized_trips = TripSerializer(user_trips, many=True)
     return Response(serialized_trips.data)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
