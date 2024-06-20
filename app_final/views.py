@@ -13,6 +13,7 @@ from .serializers import *
 import logging
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.db.models import Q
 
 # Create your views here.
 
@@ -125,11 +126,22 @@ def create_trip(request):
 
 
 
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_trips(request):
+#     user = request.user
+#     user_trips = Trip.objects.filter(user=user)
+#     # user_trips = Trip.objects.filter(friends=user)
+
+#     serialized_trips = TripSerializer(user_trips, many=True)
+#     return Response(serialized_trips.data)
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_trips(request):
     user = request.user
-    user_trips = Trip.objects.filter(user=user)
+    user_trips = Trip.objects.filter(Q(user=user) | Q(friends=user))
+    
     serialized_trips = TripSerializer(user_trips, many=True)
     return Response(serialized_trips.data)
 
