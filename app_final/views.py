@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
 import logging
+from django.http import HttpResponse
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -33,16 +35,6 @@ def create_user(request):
 
 
 
-# @api_view (['POST'])
-# @permission_classes ([IsAuthenticated])
-# def add_friend(request, pk):
-#     username = request.data.get('username')
-#     trip = Trip.objects.get(pk=pk, user=request.user)
-#     friend = User.objects.get(username=username)
-#     trip.friends.add(friend)
-#     trip.save()
-#     serialized_trip = TripSerializer(trip)
-#     return Response(serialized_trip.data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -60,6 +52,8 @@ def add_friend(request, pk):
     trip.save()
     serialized_trip = TripSerializer(trip)
     return Response(serialized_trip.data)
+
+
 
 
 @api_view(['POST'])
@@ -107,6 +101,16 @@ def create_trip(request):
 
 
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_trips(request):
+    user = request.user
+    user_trips = Trip.objects.filter(user=user)
+    serialized_trips = TripSerializer(user_trips, many=True)
+    return Response(serialized_trips.data)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_completed_trips(request):
@@ -116,6 +120,14 @@ def get_completed_trips(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_trips(request):
+    user = request.user
+    # Get trips where the user is the creator or a friend!
+    user_trips = Trip.objects.filter(user=user) | Trip.objects.filter(friends__in=[user])
+    serialized_trips = TripSerializer(user_trips, many=True)
+    return Response
 
 logger = logging.getLogger(__name__)
 
@@ -136,14 +148,7 @@ def update_trip(request, pk):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# @api_view(['DELETE'])
-# @permission_classes([IsAuthenticated])
-# def delete_trip(request, pk):
-#     trip = Trip.objects.filter(pk=pk, user=request.user).first()
-#     if not trip:
-#         return Response({'error': 'Trip not found'}, status=status.HTTP_404_NOT_FOUND)
-#     trip.delete()
-#     return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -187,23 +192,14 @@ def get_profile(request):
     serialized_profile = ProfileSerializer(profile, many=False)
     return Response(serialized_profile.data)
 
+
 # @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
 # def get_trips(request):
 #     user = request.user
-#     get_trips = Trip.objects.all()
-#     # get_trips = Trip.objects.get(pk=pk, user=request.user)
-#     serialized_trips = TripSerializer(get_trips, many=True)
+#     user_trips = Trip.objects.filter(user=user)
+#     serialized_trips = TripSerializer(user_trips, many=True)
 #     return Response(serialized_trips.data)
-
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_trips(request):
-    user = request.user
-    user_trips = Trip.objects.filter(user=user)
-    serialized_trips = TripSerializer(user_trips, many=True)
-    return Response(serialized_trips.data)
 
 
 @api_view(['GET'])
