@@ -32,6 +32,7 @@ from rest_framework.routers import DefaultRouter
 from app_final.views import *
 from app_final.models import *
 
+
 from rest_framework import routers
 
 
@@ -60,6 +61,9 @@ urlpatterns = [
     path('create-trip/', create_trip),
     # path('update-trip/', update_trip),
     path('add-friend/<int:pk>/', add_friend, name='add_friend'),
+    # path('send-join-request/<int:trip_id>/', views.send_join_request),
+    # path('accept-join-request/<int:trip_id>/<int:user_id>/', views.accept_join_request),
+    # path('decline-join-request/<int:trip_id>/<int:user_id>/', views.decline_join_request),
     path('update-trip/<int:pk>/', update_trip, name='update_trip'),
     path('delete-trip/<int:pk>/', delete_trip, name='delete_trip'),
     path('get-trips/', get_trips),

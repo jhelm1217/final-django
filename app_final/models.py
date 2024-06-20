@@ -24,6 +24,8 @@ class Trip(models.Model):
     created_by = models.CharField(max_length=300, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     friends = models.ManyToManyField(User, related_name='shared_trips', null=True, blank=True)
+    # pending_requests = models.ManyToManyField(User, related_name='pending_trips', null=True, blank=True)
+
     # updated_at = models.DateTimeField(auto_now=True)
     # description = models.TextField()
 

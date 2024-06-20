@@ -54,6 +54,29 @@ def add_friend(request, pk):
     return Response(serialized_trip.data)
 
 
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def send_join_request(request, trip_id):
+#     trip = Trip.objects.get(pk=trip_id)
+#     trip.pending_requests.add(request.user)
+#     return Response({'message': 'Join request sent successfully'})
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def accept_join_request(request, trip_id, user_id):
+#     trip = Trip.objects.get(pk=trip_id)
+#     user = User.objects.get(pk=user_id)
+#     trip.pending_requests.remove(user)
+#     trip.accepted_participants.add(user)
+#     return Response({'message': 'Join request accepted successfully'})
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def decline_join_request(request, trip_id, user_id):
+#     trip = Trip.objects.get(pk=trip_id)
+#     user = User.objects.get(pk=user_id)
+#     trip.pending_requests.remove(user)
+#     return Response({'message': 'Join request declined successfully'})
 
 
 @api_view(['POST'])
